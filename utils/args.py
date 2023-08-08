@@ -18,7 +18,7 @@ class ArgumentsManager(ABC):
         self.initialized = False
 
         self.parser.add_argument(
-            'experiment',
+            '--experiment',
             help='name of experiment, possible are:'
                  '{"cifar10", "cifar100", "femnist", "shakespeare"}',
             type=str,
