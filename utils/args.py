@@ -59,7 +59,7 @@ class ArgumentsManager(ABC):
             "--seed",
             help='random seed; if not specified the system clock is used to generate the seed',
             type=int,
-            default=argparse.SUPPRESS
+            default=1
         )
         self.parser.add_argument(
             '--alpha',
