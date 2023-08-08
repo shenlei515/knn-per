@@ -16,6 +16,7 @@ from utils.constants import *
 from utils.args import TrainArgumentsManager
 
 from torch.utils.tensorboard import SummaryWriter
+from data_preprocessing.build import load_data
 
 
 def init_clients(args_, data_dir, logs_dir, chkpts_dir):
@@ -67,6 +68,7 @@ def init_clients(args_, data_dir, logs_dir, chkpts_dir):
         os.makedirs(logs_path, exist_ok=True)
         logger = SummaryWriter(logs_path)
 
+        
         client = get_client(
             client_type=args_.client_type,
             learner=learner,
@@ -110,7 +112,17 @@ def run_experiment(arguments_manager_):
         chkpts_dir = args_.chkpts_dir
     else:
         chkpts_dir = os.path.join("chkpts", arguments_manager_.args_to_string())
-
+        
+    train_data_num, test_data_num, train_data_global, test_data_global, \
+                    data_local_num_dict, train_data_local_dict, test_data_local_dict, class_num, other_params = load_data(
+                    load_as="training", args=args_, process_id=0, mode="standalone", task="federated", data_efficient_load=True,
+                    dirichlet_balance=False, dirichlet_min_p=None,
+                    dataset=args_.experiment, datadir=data_dir,
+                    partition_method=args_.partition_method, partition_alpha=args_.partition_alpha,
+                    client_number=args_.client_num_in_total, batch_size=args_.bz,
+                    data_sampler=args_.data_sampler,
+                    resize=args_.dataset_load_image_size)
+                    
     print("==> Clients initialization..")
     clients = \
         init_clients(

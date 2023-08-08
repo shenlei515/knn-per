@@ -34,7 +34,7 @@ class ArgumentsManager(ABC):
             '--bz',
             help='batch_size; default is 1',
             type=int,
-            default=1
+            default=128
         )
         self.parser.add_argument(
             '--device',
@@ -60,6 +60,44 @@ class ArgumentsManager(ABC):
             type=int,
             default=argparse.SUPPRESS
         )
+        self.parser.add_argument(
+            '--alpha',
+            help='parameter controlling tasks dissimilarity, the smaller alpha is the more tasks are dissimilar;'
+                'ignored if `--by_labels_split` is not used; default is 0.5',
+            type=float,
+            default=0.5
+        )
+        self.parser.add_argument(
+            '--dataset_load_image_size',
+            type=int,
+            default=32
+        )
+        self.parser.add_argument(
+            '--data_sampler',
+            type=str,
+            default="Random"
+        )
+        self.parser.add_argument(
+            '--client_num_in_total',
+            type=int,
+            default=10
+        )
+        self.parser.add_argument(
+            '--partition_alpha',
+            type=float,
+            default=0.1
+        )
+        self.parser.add_argument(
+            '--partition_method',
+            type=str,
+            default="hetero"
+        )
+        self.parser.add_argument(
+            '--TwoCropTransform',
+            type=bool,
+            default=False
+        )
+
 
     def parse_arguments(self, args_list=None):
         if args_list:
